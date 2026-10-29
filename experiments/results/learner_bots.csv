@@ -1,0 +1,11 @@
+learner,level,challenges_tested,passed_count,pass_rate_pct,observations
+State-Merging (RPNI),1,20,0,0.0,Captures simple prefixes
+Small-DFA Enumerator (<=2Q),1,20,0,0.0,Consistent small-state matches
+State-Merging (RPNI),2,20,0,0.0,Overgeneralizes on 6 examples
+Small-DFA Enumerator (<=2Q),2,20,1,5.0,Consistent small-state matches
+State-Merging (RPNI),3,20,0,0.0,Overgeneralizes on 6 examples
+Small-DFA Enumerator (<=2Q),3,20,0,0.0,Hypothesis space exceeds 2 states
+State-Merging (RPNI),4,20,0,0.0,Overgeneralizes on 6 examples
+Small-DFA Enumerator (<=2Q),4,20,0,0.0,Hypothesis space exceeds 2 states
+State-Merging (RPNI),5,20,0,0.0,Overgeneralizes on 6 examples
+Small-DFA Enumerator (<=2Q),5,20,3,15.0,Hypothesis space exceeds 2 states

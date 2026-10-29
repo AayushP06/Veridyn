@@ -1,0 +1,6 @@
+level,challenges_tested,total_consistent_hypotheses,avg_consistent_per_challenge,random_tests_pass_count,random_tests_pass_rate_pct,certified_tests_pass_count,certified_tests_pass_rate_pct
+1,30,28,0.93,4,14.29,0,0.0
+2,30,42,1.4,7,16.67,0,0.0
+3,30,35,1.17,13,37.14,0,0.0
+4,30,30,1.0,8,26.67,0,0.0
+5,30,16,0.53,1,6.25,0,0.0

@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VeriDyn - Certified Inductive Challenges</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #0a0e17;
+      --bg-card: rgba(18, 26, 43, 0.75);
+      --bg-card-hover: rgba(28, 40, 65, 0.85);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-active: #00d2ff;
+      --border-focus: #38bdf8;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --accent-cyan: #00d2ff;
+      --accent-purple: #8b5cf6;
+      --accent-glow: rgba(0, 210, 255, 0.15);
+      --valid-green: #10b981;
+      --valid-glow: rgba(16, 185, 129, 0.2);
+      --invalid-rose: #f43f5e;
+      --invalid-glow: rgba(244, 63, 94, 0.2);
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'Fira Code', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      background-image: 
+        radial-gradient(circle at 15% 10%, rgba(0, 210, 255, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.08) 0%, transparent 40%);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 1rem;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-badge {
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+      color: #050811;
+      font-weight: 800;
+      font-size: 1.1rem;
+      padding: 0.4rem 0.75rem;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      letter-spacing: -0.02em;
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #ffffff 30%, var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .session-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.4rem 0.85rem;
+      border-radius: 9999px;
+      border: 1px solid var(--border-subtle);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .session-badge strong {
+      color: var(--accent-cyan);
+    }
+
+    /* Scope Alert Box */
+    .scope-box {
+      background: rgba(0, 210, 255, 0.04);
+      border-left: 4px solid var(--accent-cyan);
+      border-radius: 0 8px 8px 0;
+      padding: 0.9rem 1.25rem;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .scope-box strong {
+      color: var(--text-main);
+    }
+
+    /* Controls Bar */
+    .controls-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      padding: 1rem 1.25rem;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .level-selector {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    select, button {
+      font-family: inherit;
+    }
+
+    select {
+      background: #0f172a;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      padding: 0.45rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    select:focus-visible {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.55rem 1.1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid transparent;
+      outline: none;
+    }
+
+    .btn:focus-visible {
+      box-shadow: 0 0 0 3px var(--accent-cyan);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-cyan), #0284c7);
+      color: #031326;
+      box-shadow: 0 4px 14px var(--accent-glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0, 210, 255, 0.3);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-main);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Symbol Tokens (Accessible Shapes + Letters) */
+    .symbol-token {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      background: #0f172a;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 0.25rem 0.45rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin: 0.1rem;
+      vertical-align: middle;
+    }
+
+    .shape-icon {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    .shape-circle {
+      color: #38bdf8;
+    }
+
+    .shape-triangle {
+      color: #fbbf24;
+    }
+
+    .shape-square {
+      color: #a78bfa;
+    }
+
+    /* Grid Layout for Examples */
+    .examples-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 680px) {
+      .examples-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .badge-valid {
+      color: var(--valid-green);
+    }
+
+    .badge-invalid {
+      color: var(--invalid-rose);
+    }
+
+    .word-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .word-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .word-display {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.2rem;
+    }
+
+    .word-raw {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-left: 0.5rem;
+    }
+
+    /* Tests Section */
+    .tests-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .test-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border-subtle);
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      transition: all 0.15s ease;
+      position: relative;
+    }
+
+    .test-item:focus-within,
+    .test-item.focused-row {
+      border-color: var(--border-focus);
+      background: rgba(0, 210, 255, 0.04);
+      box-shadow: 0 0 0 1px var(--border-focus);
+    }
+
+    .test-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .test-id {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--accent-cyan);
+      background: rgba(0, 210, 255, 0.1);
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .test-actions {
+      display: inline-flex;
+      gap: 0.5rem;
+    }
+
+    .verdict-btn {
+      padding: 0.45rem 0.9rem;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      background: #0f172a;
+      color: var(--text-muted);
+      border: 1px solid var(--border-subtle);
+      transition: all 0.15s;
+      outline: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .verdict-btn:focus-visible {
+      outline: 2px solid var(--accent-cyan);
+      outline-offset: 1px;
+    }
+
+    .verdict-btn.active-valid {
+      background: var(--valid-green);
+      color: #032014;
+      border-color: var(--valid-green);
+      box-shadow: 0 0 12px var(--valid-glow);
+    }
+
+    .verdict-btn.active-invalid {
+      background: var(--invalid-rose);
+      color: #2b040b;
+      border-color: var(--invalid-rose);
+      box-shadow: 0 0 12px var(--invalid-glow);
+    }
+
+    /* Keyboard Shortcuts Bar */
+    .keyboard-hint {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      padding: 0.5rem 0;
+    }
+
+    kbd {
+      background: #1e293b;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.25);
+      border-radius: 4px;
+      padding: 0.1rem 0.35rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-main);
+    }
+
+    /* Outcome Panel */
+    .result-panel {
+      display: none;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .result-panel.passed {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid var(--valid-green);
+      box-shadow: 0 0 30px rgba(16, 185, 129, 0.15);
+    }
+
+    .result-panel.failed {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      background: rgba(244, 63, 94, 0.08);
+      border: 1px solid var(--invalid-rose);
+      box-shadow: 0 0 30px rgba(244, 63, 94, 0.15);
+    }
+
+    .result-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .result-panel.passed .result-title {
+      color: var(--valid-green);
+    }
+
+    .result-panel.failed .result-title {
+      color: var(--invalid-rose);
+    }
+
+    .result-score {
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      color: var(--text-main);
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.35rem 0.85rem;
+      border-radius: 6px;
+    }
+
+    /* Loading Spinner */
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-top-color: var(--accent-cyan);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: inline-block;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Footer */
+    footer {
+      margin-top: auto;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .footer-note {
+      color: var(--accent-cyan);
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo-group">
+        <span class="logo-badge" aria-hidden="true">RS</span>
+        <div>
+          <h1>VeriDyn</h1>
+          <p class="subtitle">Certified Inductive Challenges Built from Finite Automata</p>
+        </div>
+      </div>
+      <div class="session-badge" id="session-badge" aria-live="polite">
+        Session: <strong id="session-id-display">Initializing...</strong> |
+        Attempts Left: <strong id="attempts-left-display">3</strong>
+      </div>
+    </header>
+
+    <div class="scope-box" id="scope-statement">
+      <strong>Scope Statement:</strong> "VeriDyn certifies that no guessing strategy in a stated hypothesis class passes the challenge. It does NOT verify that a respondent is human. Learners, programs and language models outside that class are not covered."
+    </div>
+
+    <!-- Controls Bar -->
+    <div class="controls-bar">
+      <div class="level-selector">
+        <label for="level-select"><strong>Difficulty Level:</strong></label>
+        <select id="level-select" aria-label="Select challenge difficulty level">
+          <option value="1" selected>Level 1: Novice (1 Atom)</option>
+          <option value="2">Level 2: Elementary (Conjunction)</option>
+          <option value="3">Level 3: Intermediate (Difference)</option>
+          <option value="4">Level 4: Advanced (Disjunction)</option>
+          <option value="5">Level 5: Expert (Symmetric Diff)</option>
+        </select>
+      </div>
+
+      <button id="new-challenge-btn" class="btn btn-outline" type="button">
+        <span>Fetch New Challenge</span>
+        <kbd>N</kbd>
+      </button>
+    </div>
+
+    <!-- Main Challenge Arena -->
+    <main id="app" class="card" style="gap: 1.5rem;" aria-label="Challenge Arena">
+      <!-- Loading State -->
+      <div id="loading-indicator" style="text-align: center; padding: 2rem; display: none;">
+        <div class="spinner"></div>
+        <p style="margin-top: 0.75rem; color: var(--text-muted);">Synthesizing certified inductive challenge...</p>
+      </div>
+
+      <div id="challenge-content" style="display: flex; flex-direction: column; gap: 1.5rem;">
+        <!-- Two Labelled Lists of Examples -->
+        <section aria-labelledby="examples-heading">
+          <h2 id="examples-heading" style="font-size: 1.15rem; margin-bottom: 0.75rem;">Labelled Examples (Observation Set)</h2>
+          <div class="examples-grid">
+            <!-- Positive / Valid Examples -->
+            <div class="card" style="background: rgba(16, 185, 129, 0.04); border-color: rgba(16, 185, 129, 0.2);">
+              <div class="card-header">
+                <span class="card-title badge-valid">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  Valid Examples
+                </span>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Accepted by rule</span>
+              </div>
+              <ul class="word-list" id="positive-examples-list" aria-label="List of valid example strings"></ul>
+            </div>
+
+            <!-- Negative / Invalid Examples -->
+            <div class="card" style="background: rgba(244, 63, 94, 0.04); border-color: rgba(244, 63, 94, 0.2);">
+              <div class="card-header">
+                <span class="card-title badge-invalid">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                  Invalid Examples
+                </span>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Rejected by rule</span>
+              </div>
+              <ul class="word-list" id="negative-examples-list" aria-label="List of invalid example strings"></ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Test Strings to Classify -->
+        <section aria-labelledby="tests-heading">
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+            <div>
+              <h2 id="tests-heading" style="font-size: 1.15rem;">Unlabelled Test Strings</h2>
+              <p style="font-size: 0.85rem; color: var(--text-muted);">Classify each string as Valid or Invalid based on the inductive rule inferred above.</p>
+            </div>
+            <div class="keyboard-hint" aria-hidden="true">
+              <span>Keys: <kbd>&uarr;</kbd> <kbd>&darr;</kbd> Navigate</span>
+              <span><kbd>V</kbd>/<kbd>1</kbd> Valid</span>
+              <span><kbd>I</kbd>/<kbd>2</kbd> Invalid</span>
+              <span><kbd>Enter</kbd> Submit</span>
+            </div>
+          </div>
+
+          <div class="tests-container" id="tests-container" role="region" aria-label="Test strings classification list">
+            <!-- Dynamically populated test rows -->
+          </div>
+        </section>
+
+        <!-- Action / Submit -->
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding-top: 0.5rem;">
+          <span id="completion-status" style="font-size: 0.9rem; color: var(--text-muted);" aria-live="polite">
+            0 of 6 test strings classified.
+          </span>
+          <button id="submit-btn" class="btn btn-primary" type="button" disabled>
+            <span>Submit Classification</span>
+            <kbd>Enter</kbd>
+          </button>
+        </div>
+
+        <!-- Outcome / Result Panel -->
+        <div id="result-panel" class="result-panel" role="status" aria-live="assertive">
+          <div class="result-title" id="result-title"></div>
+          <div class="result-score" id="result-score"></div>
+          <p id="result-message" style="color: var(--text-muted); font-size: 0.95rem;"></p>
+          <div style="margin-top: 0.75rem; display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center;">
+            <button id="retry-challenge-btn" class="btn btn-outline" type="button">Adjust Answers &amp; Re-Submit</button>
+            <button id="try-again-btn" class="btn btn-primary" type="button">Fetch New Challenge</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p class="footer-note">This is a rule-inference check, not identity verification</p>
+      <p>VeriDyn Theory of Computation Research Project &bull; Language Alphabet: &Sigma; = {C, T, S}</p>
+    </footer>
+  </div>
+
+  <script>
+    // State
+    const state = {
+      sessionId: null,
+      nonce: null,
+      level: 1,
+      examples: [],
+      tests: [],
+      answers: {},
+      focusedIndex: 0,
+      attemptsLeft: 3,
+      isSubmitting: false,
+    };
+
+    // Shape Icons mapping for accessible symbol rendering (Shape AND Letter text)
+    function renderSymbolToken(char) {
+      let shapeSvg = '';
+      let shapeName = '';
+      let colorClass = '';
+
+      if (char === 'C') {
+        shapeName = 'Circle';
+        colorClass = 'shape-circle';
+        shapeSvg = `<svg class="shape-icon ${colorClass}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg>`;
+      } else if (char === 'T') {
+        shapeName = 'Triangle';
+        colorClass = 'shape-triangle';
+        shapeSvg = `<svg class="shape-icon ${colorClass}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><polygon points="12 3 22 21 2 21"/></svg>`;
+      } else if (char === 'S') {
+        shapeName = 'Square';
+        colorClass = 'shape-square';
+        shapeSvg = `<svg class="shape-icon ${colorClass}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>`;
+      } else {
+        shapeName = 'Symbol';
+        shapeSvg = '';
+      }
+
+      return `<span class="symbol-token" title="${shapeName}: ${char}" aria-label="${shapeName} ${char}">${shapeSvg}<span>${char}</span></span>`;
+    }
+
+    function renderWordTokens(word) {
+      if (!word) return '<span style="color: var(--text-muted); font-style: italic;">&epsilon; (empty)</span>';
+      return word.split('').map(renderSymbolToken).join('');
+    }
+
+    // UI Updates
+    function updateCompletionStatus() {
+      const total = state.tests.length;
+      const count = Object.keys(state.answers).length;
+      const statusEl = document.getElementById('completion-status');
+      const submitBtn = document.getElementById('submit-btn');
+
+      statusEl.textContent = `${count} of ${total} test strings classified.`;
+      const isExhausted = (state.attemptsLeft <= 0 && state.attemptsLeft < 999);
+      submitBtn.disabled = (count < total || state.isSubmitting || isExhausted);
+    }
+
+    function renderChallenge(data) {
+      state.nonce = data.nonce;
+      state.sessionId = data.session_id;
+      state.level = data.level;
+      state.attemptsLeft = data.attempts_left;
+      state.examples = data.examples;
+      state.tests = data.tests;
+      state.answers = {};
+      state.focusedIndex = 0;
+
+      // Update header badges
+      document.getElementById('session-id-display').textContent = data.session_id.substring(0, 12) + '...';
+      document.getElementById('attempts-left-display').textContent = (data.attempts_left >= 999) ? 'Unlimited (Practice)' : data.attempts_left;
+
+      // Populate Positive Examples
+      const posList = document.getElementById('positive-examples-list');
+      posList.innerHTML = '';
+      data.examples.filter(e => e.label === 'valid').forEach(e => {
+        const li = document.createElement('li');
+        li.className = 'word-row';
+        li.innerHTML = `
+          <div class="word-display">${renderWordTokens(e.string)}</div>
+          <span class="word-raw">${e.string}</span>
+        `;
+        posList.appendChild(li);
+      });
+
+      // Populate Negative Examples
+      const negList = document.getElementById('negative-examples-list');
+      negList.innerHTML = '';
+      data.examples.filter(e => e.label === 'invalid').forEach(e => {
+        const li = document.createElement('li');
+        li.className = 'word-row';
+        li.innerHTML = `
+          <div class="word-display">${renderWordTokens(e.string)}</div>
+          <span class="word-raw">${e.string}</span>
+        `;
+        negList.appendChild(li);
+      });
+
+      // Populate Tests
+      const testsContainer = document.getElementById('tests-container');
+      testsContainer.innerHTML = '';
+
+      data.tests.forEach((t, idx) => {
+        const row = document.createElement('div');
+        row.className = `test-item ${idx === 0 ? 'focused-row' : ''}`;
+        row.id = `test-row-${idx}`;
+        row.setAttribute('tabindex', '0');
+        row.setAttribute('role', 'group');
+        row.setAttribute('aria-label', `Test string ${idx + 1} of ${data.tests.length}: ${t.string}`);
+
+        row.innerHTML = `
+          <div class="test-meta">
+            <span class="test-id">${t.id.toUpperCase()}</span>
+            <div class="word-display">${renderWordTokens(t.string)}</div>
+            <span class="word-raw">${t.string}</span>
+          </div>
+          <div class="test-actions">
+            <button type="button" class="verdict-btn" id="btn-valid-${t.id}" data-tid="${t.id}" data-verdict="valid" aria-pressed="false">
+              <span>Valid</span>
+              <kbd>V</kbd>
+            </button>
+            <button type="button" class="verdict-btn" id="btn-invalid-${t.id}" data-tid="${t.id}" data-verdict="invalid" aria-pressed="false">
+              <span>Invalid</span>
+              <kbd>I</kbd>
+            </button>
+          </div>
+        `;
+
+        // Focus listeners
+        row.addEventListener('focus', () => setFocusedIndex(idx));
+
+        // Click listeners for buttons
+        const btnV = row.querySelector(`#btn-valid-${t.id}`);
+        const btnI = row.querySelector(`#btn-invalid-${t.id}`);
+
+        btnV.addEventListener('click', () => chooseVerdict(t.id, 'valid', idx));
+        btnI.addEventListener('click', () => chooseVerdict(t.id, 'invalid', idx));
+
+        testsContainer.appendChild(row);
+      });
+
+      // Reset result panel
+      const resPanel = document.getElementById('result-panel');
+      resPanel.className = 'result-panel';
+      resPanel.style.display = 'none';
+
+      updateCompletionStatus();
+    }
+
+    function setFocusedIndex(idx) {
+      if (idx < 0 || idx >= state.tests.length) return;
+      state.focusedIndex = idx;
+      document.querySelectorAll('.test-item').forEach((el, i) => {
+        el.classList.toggle('focused-row', i === idx);
+      });
+      const target = document.getElementById(`test-row-${idx}`);
+      if (target && document.activeElement !== target && !target.contains(document.activeElement)) {
+        target.focus();
+      }
+    }
+
+    function chooseVerdict(tid, verdict, idx) {
+      state.answers[tid] = verdict;
+
+      const btnV = document.getElementById(`btn-valid-${tid}`);
+      const btnI = document.getElementById(`btn-invalid-${tid}`);
+
+      if (verdict === 'valid') {
+        btnV.classList.add('active-valid');
+        btnV.setAttribute('aria-pressed', 'true');
+        btnI.classList.remove('active-invalid');
+        btnI.setAttribute('aria-pressed', 'false');
+      } else {
+        btnI.classList.add('active-invalid');
+        btnI.setAttribute('aria-pressed', 'true');
+        btnV.classList.remove('active-valid');
+        btnV.setAttribute('aria-pressed', 'false');
+      }
+
+      updateCompletionStatus();
+
+      // Automatically advance focus to the next test string
+      if (idx !== undefined && idx + 1 < state.tests.length) {
+        setFocusedIndex(idx + 1);
+      }
+    }
+
+    // API Calls
+    async function fetchChallenge() {
+      const loader = document.getElementById('loading-indicator');
+      const content = document.getElementById('challenge-content');
+      loader.style.display = 'block';
+      content.style.opacity = '0.4';
+
+      try {
+        const payload = {
+          level: parseInt(document.getElementById('level-select').value, 10),
+          session_id: state.sessionId,
+        };
+
+        const resp = await fetch('/api/challenge', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await resp.json();
+        if (!resp.ok) {
+          alert(`Error: ${data.message || 'Failed to fetch challenge'}`);
+          return;
+        }
+
+        renderChallenge(data);
+      } catch (err) {
+        console.error('Fetch error:', err);
+        alert('Network error while requesting challenge.');
+      } finally {
+        loader.style.display = 'none';
+        content.style.opacity = '1';
+      }
+    }
+
+    async function submitChallenge() {
+      if (Object.keys(state.answers).length < state.tests.length) return;
+      state.isSubmitting = true;
+      updateCompletionStatus();
+
+      try {
+        const payload = {
+          nonce: state.nonce,
+          answers: state.answers,
+        };
+
+        const resp = await fetch('/api/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await resp.json();
+        const resPanel = document.getElementById('result-panel');
+        const resTitle = document.getElementById('result-title');
+        const resScore = document.getElementById('result-score');
+        const resMsg = document.getElementById('result-message');
+
+        if (!resp.ok) {
+          resPanel.className = 'result-panel failed';
+          resPanel.style.display = 'flex';
+          resTitle.textContent = 'Challenge failed';
+          resScore.textContent = `Error: ${data.error_code || 'INVALID'}`;
+          resMsg.textContent = data.message || 'Submission error.';
+          return;
+        }
+
+        state.attemptsLeft = data.attempts_left;
+        document.getElementById('attempts-left-display').textContent = (data.attempts_left >= 999) ? 'Unlimited (Practice)' : data.attempts_left;
+
+        const isPassed = (data.result === 'Challenge passed');
+        resPanel.className = `result-panel ${isPassed ? 'passed' : 'failed'}`;
+        resPanel.style.display = 'flex';
+        resTitle.textContent = data.result;
+        resScore.textContent = `${data.correct_count} / ${data.total_tests} Correct`;
+        resMsg.textContent = data.message;
+
+        resPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } catch (err) {
+        console.error('Submit error:', err);
+        alert('Network error while submitting answers.');
+      } finally {
+        state.isSubmitting = false;
+        updateCompletionStatus();
+      }
+    }
+
+    // Global Keyboard Navigation
+    document.addEventListener('keydown', (e) => {
+      // Ignore if user is interacting with select dropdown
+      if (e.target.tagName === 'SELECT') return;
+
+      const totalTests = state.tests.length;
+      if (totalTests === 0) return;
+
+      if (e.key === 'ArrowDown' || e.key === 'j') {
+        e.preventDefault();
+        setFocusedIndex(Math.min(totalTests - 1, state.focusedIndex + 1));
+      } else if (e.key === 'ArrowUp' || e.key === 'k') {
+        e.preventDefault();
+        setFocusedIndex(Math.max(0, state.focusedIndex - 1));
+      } else if (e.key === 'v' || e.key === 'V' || e.key === '1') {
+        const currentTest = state.tests[state.focusedIndex];
+        if (currentTest) {
+          chooseVerdict(currentTest.id, 'valid', state.focusedIndex);
+        }
+      } else if (e.key === 'i' || e.key === 'I' || e.key === 'x' || e.key === 'X' || e.key === '2') {
+        const currentTest = state.tests[state.focusedIndex];
+        if (currentTest) {
+          chooseVerdict(currentTest.id, 'invalid', state.focusedIndex);
+        }
+      } else if (e.key === 'Enter') {
+        const submitBtn = document.getElementById('submit-btn');
+        if (!submitBtn.disabled) {
+          e.preventDefault();
+          submitChallenge();
+        }
+      } else if (e.key === 'n' || e.key === 'N') {
+        if (!e.ctrlKey && !e.metaKey) {
+          e.preventDefault();
+          fetchChallenge();
+        }
+      }
+    });
+
+    // Wire Event Listeners
+    document.getElementById('new-challenge-btn').addEventListener('click', fetchChallenge);
+    document.getElementById('try-again-btn').addEventListener('click', fetchChallenge);
+    document.getElementById('retry-challenge-btn').addEventListener('click', () => {
+      const testsContainer = document.getElementById('tests-container');
+      testsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setFocusedIndex(0);
+    });
+    document.getElementById('submit-btn').addEventListener('click', submitChallenge);
+    document.getElementById('level-select').addEventListener('change', fetchChallenge);
+
+    // Initial load
+    fetchChallenge();
+  </script>
+</body>
+</html>

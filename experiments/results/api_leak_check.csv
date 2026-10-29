@@ -1,0 +1,14 @@
+endpoint,scenario,bytes_audited,leaks_found,status
+GET /,Static Landing Page,32802,0,SECURE
+POST /api/challenge,Challenge Gen (Level 1),624,0,SECURE
+POST /api/submit,Correct Solution (Level 1),231,0,SECURE
+POST /api/challenge,Challenge Gen (Level 2),621,0,SECURE
+POST /api/submit,Correct Solution (Level 2),231,0,SECURE
+POST /api/challenge,Challenge Gen (Level 3),630,0,SECURE
+POST /api/submit,Correct Solution (Level 3),231,0,SECURE
+POST /api/challenge,Challenge Gen (Level 4),649,0,SECURE
+POST /api/submit,Correct Solution (Level 4),231,0,SECURE
+POST /api/challenge,Challenge Gen (Level 5),632,0,SECURE
+POST /api/submit,Correct Solution (Level 5),231,0,SECURE
+POST /api/submit,Failed Attempt (Incorrect),230,0,SECURE
+POST /api/submit,Error Branch (404 Nonce),144,0,SECURE

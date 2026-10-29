@@ -1,0 +1,6 @@
+attack_vector,attempts,blocked,error_code,verdict
+Replay Attack (Single-Use),10,10,NONCE_ALREADY_USED,BLOCKED
+Expired Nonce (TTL Exceeded),1,1,NONCE_EXPIRED,BLOCKED
+Attempt-Cap Overflow (>3),1,1,SESSION_ATTEMPTS_EXHAUSTED,BLOCKED
+Oversized Payload (>Cap),1,1,INVALID_PAYLOAD,BLOCKED
+Rate-Limit Burst (>Cap/min),5,5,RATE_LIMIT_EXCEEDED,BLOCKED
